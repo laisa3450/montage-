@@ -133,6 +133,105 @@ export default function Auth() {
       </div>
     </div>
   )
+  }      setLoading(false)
+    }
+  }
+
+  const handleReset = async () => {
+    if (!email) return toast.error("Enter your email first")
+    const { error } = await supabase.auth.resetPasswordForEmail(email)
+    if (error) toast.error(error.message)
+    else toast.success("Check your email for password reset link")
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-pink-50 via-purple-50 to-white p-4">
+      {/* Floating gradient logo */}
+      <div className="mb-10">
+        <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-pink-500 to-purple-500 flex items-center justify-center text-white text-3xl font-extrabold shadow-lg">
+          M
+        </div>
+      </div>
+
+      {/* Auth card */}
+      <div
+        className={clsx(
+          "bg-white rounded-3xl shadow-xl w-full max-w-sm p-6 space-y-6 transition-transform",
+          shake && "animate-shake"
+        )}
+      >
+        <h1 className="text-3xl font-extrabold text-center">
+          {mode === "login" ? "Log In" : "Sign Up"}
+        </h1>
+
+        <div className="space-y-4">
+          {/* Email */}
+          <div className="relative">
+            <FiMail className="absolute top-3 left-3 text-gray-400" />
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full pl-10 pr-3 py-3 border rounded-xl focus:ring-2 focus:ring-pink-400 outline-none transition"
+            />
+          </div>
+
+          {/* Password */}
+          <div className="relative">
+            <FiLock className="absolute top-3 left-3 text-gray-400" />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full pl-10 pr-3 py-3 border rounded-xl focus:ring-2 focus:ring-pink-400 outline-none transition"
+            />
+          </div>
+
+          {/* Username (signup only) */}
+          {mode === "signup" && (
+            <div className="relative">
+              <FiUser className="absolute top-3 left-3 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full pl-10 pr-3 py-3 border rounded-xl focus:ring-2 focus:ring-pink-400 outline-none transition"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Submit button */}
+        <button
+          onClick={handleAuth}
+          disabled={loading}
+          className={clsx(
+            "w-full py-3 rounded-2xl font-bold text-white text-lg bg-gradient-to-r from-pink-500 to-purple-500",
+            "hover:from-pink-600 hover:to-purple-600 transition",
+            loading && "opacity-50"
+          )}
+        >
+          {loading ? "Loading..." : mode === "login" ? "Log In" : "Sign Up"}
+        </button>
+
+        {/* Bottom links */}
+        <div className="flex justify-between items-center text-sm text-gray-500">
+          <button className="underline" onClick={handleReset}>
+            Forgot password?
+          </button>
+          <button
+            className="font-semibold text-pink-500 underline"
+            onClick={() => setMode(mode === "login" ? "signup" : "login")}
+          >
+            {mode === "login" ? "Sign Up" : "Log In"}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
     }      setLoading(false)
     }
   }
